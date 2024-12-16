@@ -1,1 +1,67 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting App</title>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        button { padding: 10px; margin: 5px; cursor: pointer; }
+        .vote-count { font-size: 1.2em; margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Vote for Your Favorite Game</h1>
+    <div>
+        <button onclick="vote('game1')">Vote for Game 1</button>
+        <span class="vote-count" id="game1-count">0</span>
+    </div>
+    <div>
+        <button onclick="vote('game2')">Vote for Game 2</button>
+        <span class="vote-count" id="game2-count">0</span>
+    </div>
+
+    <script>
+        // Firebase-Konfiguration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Firebase initialisieren
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
+
+        // Live-Updates für Votes
+        const voteCounts = { game1: 0, game2: 0 };
+
+        // Referenzen zu Firebase
+        const game1Ref = firebase.database().ref('votes/game1');
+        const game2Ref = firebase.database().ref('votes/game2');
+
+        // Aktuelle Stimmen laden und live aktualisieren
+        game1Ref.on('value', (snapshot) => {
+            voteCounts.game1 = snapshot.val() || 0;
+            document.getElementById('game1-count').innerText = voteCounts.game1;
+        });
+
+        game2Ref.on('value', (snapshot) => {
+            voteCounts.game2 = snapshot.val() || 0;
+            document.getElementById('game2-count').innerText = voteCounts.game2;
+        });
+
+        // Voting-Funktion
+        function vote(game) {
+            const gameRef = firebase.database().ref(`votes/${game}`);
+            gameRef.transaction((currentVotes) => (currentVotes || 0) + 1);
+        }
+    </script>
+</body>
+</html>
