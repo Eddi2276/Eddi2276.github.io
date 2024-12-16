@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game Night Voting</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+
   <script type="module">
     // Import Firebase-Module
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
@@ -24,82 +29,248 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    // Referenzen zu den Voting-Daten
-    const game1Ref = ref(database, 'votes/game1');
-    const game2Ref = ref(database, 'votes/game2');
+    // Spieleliste für dynamische Initialisierung
+    const games = [
+      "Dr_Mario", "Sonic_the_Hedgehog_2", 
+      "Mario_Kart_64", "Crash_Team_Racing", "Power_Stone_2", 
+      "Burnout_3_Takedown", "Mario_Party_4", "FIFA_21", 
+      "Mario_Kart_8_Deluxe","vier_gewinnt","ballon_fight","ice_hockey",
+      "Street_fighter_2", "Super_smash_bros_64", "GoldenEye007","1080°",
+      "WWF_no_mercy", "Fifa64", "Tekken_3","Tony_Hawk_pro_2","Mario_Golf",
+      "Mario_kart_Double_dash", "Rocket_League", "Gran_turismo_sport"
+    ];
 
-    // Live-Updates für Votes abrufen
-    onValue(game1Ref, (snapshot) => {
-      const votes = snapshot.val() || 0;
-      document.getElementById('game1-count').innerText = votes;
+    // Firebase-Referenzen erstellen und Live-Updates aktivieren
+    games.forEach(game => {
+      const gameRef = ref(database, `votes/${game}`);
+      onValue(gameRef, (snapshot) => {
+        const votes = snapshot.val() || 0;
+        document.getElementById(game).innerText = votes;
+      });
     });
 
-    onValue(game2Ref, (snapshot) => {
-      const votes = snapshot.val() || 0;
-      document.getElementById('game2-count').innerText = votes;
-    });
-
-    // Voting-Funktion
+    // Voting-Funktion mit localStorage
     window.vote = (game) => {
+      if (localStorage.getItem(`voted_${game}`)) {
+        alert(`You have already voted for ${game.replace(/_/g, ' ')}!`);
+        return;
+      }
+
       const gameRef = ref(database, `votes/${game}`);
       onValue(gameRef, (snapshot) => {
         const currentVotes = snapshot.val() || 0;
-        set(gameRef, currentVotes + 1); // Erhöht die Anzahl der Votes um 1
-      });
+        set(gameRef, currentVotes + 1);
+        localStorage.setItem(`voted_${game}`, true);
+        alert(`Thank you for voting for ${game.replace(/_/g, ' ')}!`);
+      }, { onlyOnce: true });
     };
   </script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      color: aqua;
-    }
-
-    h1 {
-      background-color: #4CAF50;
-      color: white;
-      padding: 20px;
-    }
-
-    .vote-container {
-      margin: 20px auto;
-      width: 300px;
-    }
-
-    button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      border-radius: 5px;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    .vote-count {
-      font-size: 24px;
-      margin: 10px 0;
-    }
-  </style>
 </head>
 <body>
-  <h1>Game Night Voting</h1>
-  <div class="vote-container">
-    <h2>Game 1</h2>
-    <p>Votes: <span id="game1-count">0</span></p>
-    <button onclick="vote('game1')">Vote for Game 1</button>
-  </div>
-  <div class="vote-container">
-    <h2>Game 2</h2>
-    <p>Votes: <span id="game2-count">0</span></p>
-    <button onclick="vote('game2')">Vote for Game 2</button>
-  </div>
+<img class="Top_logo" src="logo.png" alt="logo">
+<div>
+<button id="playSoundBtn">Sound on!</button>
+<audio id="myAudio" src="22. The Only Thing They Fear Is You.mp3" preload="auto"></audio>
+</div>
+
+<script>
+    document.getElementById("playSoundBtn").onclick = function() {
+        var audio = document.getElementById("myAudio");
+        audio.play();
+    };
+</script>
+
+<h4>
+    Willkommen zur ultimativen Game Night, du Schlappschwanz!!<br><br>
+
+    Am 15. Februar 2025 wird es richtig heiß – eine Nacht, die den Begriff „Spieleabend“ auf ein ganz neues Level hebt!<br>
+    
+    Pack dich warm ein, denn du wirst auf ein episches Battle treffen, das alles fordert, was du drauf hast.<br>
+    
+    Es geht ums Überleben – Gewinnen ist alles, denn nur die Besten sammeln die Punkte.<br>
+    
+    Jedes Spiel hat seine eigenen Regeln, seine eigenen Herausforderungen, und die Punkte, die du bekommst, sind so individuell wie du!<br>
+    
+    Manchmal kämpfst du im Team, manchmal im P.v.P. – und wer weiß, vielleicht auch mal „Alle gegen Alle“.<br>
+    Die Spielmodi? Die werden dir vor dem Start verraten.<br>
+    
+    Du hast immer Zeit, dich kurz zu fangen – 5 bis 20 Minuten Pausen, damit du deine Nerven wieder sortieren kannst. Aber vergiss nicht:<br>
+     Jeder gegen Jeden, und jeder Spieler hat das Recht, dir ein Handicap aufzubürden! Kannst du das überstehen?<br>
+    
+    Der Preis? Ein verdammtes Preisgeld! THE WINNER TAKES IT ALL! Dafür musst du nur eines mitbringen: deinen 5-Euro-Buy-In.<br>
+    
+    Und keine Sorge – dein Körper wird versorgt. Dein Geist? Nun, da übernehmen wir keine Haftung für psychische Schäden<br>
+    
+    Das ist erst der Anfang. Mehr Infos folgen bald. Aber jetzt schon kannst du abstimmen, welche deiner Lieblingsspiele in den Ring kommen sollen, die Spiele mit den meisten Votes werden Gezockt.<br>
+    Hast du noch Spielewünsche!? Dann schreib mir doch du Lappen!<br>
+
+</h4>
+
+          
+
+  <div class="grid-container">
+    <div class="vote-container">
+        <!-- <h2>NES (Nintendo Entertainment System)</h2> -->
+        <img  src="cover_img/Dr_mario.jpeg" alt="logo" width="160px">
+        <button onclick="vote('Dr_Mario')">Vote for Dr. Mario</button>
+        <p>Votes: <span id="Dr_Mario">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <img  src="cover_img/vier_gewinnt.jpg" alt="logo" width="160px">
+        <button onclick="vote('vier_gewinnt')">Vote for 4 Gewinnt</button>
+        <p>Votes: <span id="vier_gewinnt">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>Sega Genesis/Mega Drive</h2> -->
+        <img  src="cover_img/Sonic_2.jpg" alt="logo" width="160px">
+        <button onclick="vote('Sonic_the_Hedgehog_2')">Vote for Sonic the Hedgehog 2</button>
+        <p>Votes: <span id="Sonic_the_Hedgehog_2">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>N64 (Nintendo 64)</h2> -->
+        <img  src="cover_img/MK64.jpg" alt="logo" width="160px">
+        <button onclick="vote('Mario_Kart_64')">Vote for Mario Kart 64</button>
+        <p>Votes: <span id="Mario_Kart_64">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS1 (PlayStation 1)</h2> -->
+        <img  src="cover_img/CrashTeamRacingNACover.png" alt="logo" width="160px">
+        <button onclick="vote('Crash_Team_Racing')">Vote for Crash Team Racing</button>
+        <p>Votes: <span id="Crash_Team_Racing">0</span></p>
+    </div>
+
+
+    <div class="vote-container">
+        <!-- <h2>PS2 (PlayStation 2)</h2> -->
+        <img  src="cover_img/burnout3.jpg" alt="logo" width="160px">
+        <button onclick="vote('Burnout_3_Takedown')">Vote for Burnout 3: Takedown</button>
+        <p>Votes: <span id="Burnout_3_Takedown">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>GameCube</h2> -->
+        <img  src="cover_img/MP4.jpg" alt="logo" width="160px">
+        <button onclick="vote('Mario_Party_4')">Vote for Mario Party 4</button>
+        <p>Votes: <span id="Mario_Party_4">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>GameCube</h2> -->
+        <img  src="cover_img/SF2.jpg" alt="logo" width="160px">
+        <button onclick="vote('Street_fighter_2')">Vote for Street Fighter 2</button>
+        <p>Votes: <span id="Street_fighter_2">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>Nintendo Switch</h2> -->
+        <img  src="cover_img/Mario_Kart_8_Deluxe.jpg" alt="logo" width="160px">
+        <button onclick="vote('Mario_Kart_8_Deluxe')">Vote for Mario Kart 8 Deluxe</button>
+        <p>Votes: <span id="Mario_Kart_8_Deluxe">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>GameCube</h2> -->
+        <img  src="cover_img/SMBN64.jpg" alt="logo" width="160px">
+        <button onclick="vote('Super_smash_bros_64')">Vote for Super Smash Bros. 64</button>
+        <p>Votes: <span id="Super_smash_bros_64">0</span></p>
+    </div>
+
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/Gran_turismo_sport.jpg" alt="logo" width="160px">
+        <button onclick="vote('Gran_turismo_sport')">Vote for Gran Turismo Sport </button>
+        <p>Votes: <span id="Gran_turismo_sport">0</span></p>
+    </div>
+
+
+    <div class="vote-container">
+        <!-- <h2>GameCube</h2> -->
+        <img  src="cover_img/GoldenEye007box.jpg" alt="logo" width="160px">
+        <button onclick="vote('GoldenEye007')">Vote for Golden Eye 007</button>
+        <p>Votes: <span id="GoldenEye007">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <img  src="cover_img/ice-hockey.jpg" alt="logo" width="160px">
+        <button onclick="vote('ice_hockey')">Vote for Ballon fight</button>
+        <p>Votes: <span id="ice_hockey">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/fifa_21.jpg" alt="logo" width="160px">
+        <button onclick="vote('FIFA_21')">Vote for FIFA 21</button>
+        <p>Votes: <span id="FIFA_21">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/snowboardingbox.jpg" alt="logo" width="160px">
+        <button onclick="vote('1080°')">Vote for 1080°Snowboarding</button>
+        <p>Votes: <span id="1080°">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/wwf64.jpg" alt="logo" width="160px">
+        <button onclick="vote('WWF_no_mercy')">Vote for WWF No Mercy N64</button>
+        <p>Votes: <span id="WWF_no_mercy">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/FIFA_Soccer_64.jpg" alt="logo" width="160px">
+        <button onclick="vote('Fifa64')">Vote for Fifa N64</button>
+        <p>Votes: <span id="Fifa64">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/Tekken3.jpg" alt="logo" width="160px">
+        <button onclick="vote('Tekken_3')">Vote for Tekken 3 </button>
+        <p>Votes: <span id="Tekken_3">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/THProSkater2.jpg" alt="logo" width="160px">
+        <button onclick="vote('Tony_Hawk_pro_2')">Vote for Tony Hawk Pro 2 </button>
+        <p>Votes: <span id="Tony_Hawk_pro_2">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/M_golf.jpg" alt="logo" width="160px">
+        <button onclick="vote('Mario_Golf')">Vote for Mario Golf </button>
+        <p>Votes: <span id="Mario_Golf">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/Mario_kart_DD.jpg" alt="logo" width="160px">
+        <button onclick="vote('Mario_kart_Double_dash')">Vote for Mario Kart Double Dash </button>
+        <p>Votes: <span id="Mario_kart_Double_dash">0</span></p>
+    </div>
+
+
+    <div class="vote-container">
+        <!-- <h2>PS4 (PlayStation 4)</h2> -->
+        <img  src="cover_img/EGS_RocketLeague_PsyonixLLC_S3_2560x1440-18eac9b5df1028fdcd5bad480ab6b085.jpeg" alt="logo" width="160px">
+        <button onclick="vote('Rocket_League')">Vote for Rocket League </button>
+        <p>Votes: <span id="Rocket_League">0</span></p>
+    </div>
+
+
+    <div class="vote-container">
+        <img  src="cover_img/ballonfight.jpg" alt="logo" width="160px">
+        <button onclick="vote('ballon_fight')">Vote for Ballon fight</button>
+        <p>Votes: <span id="ballon_fight">0</span></p>
+    </div>
+</div>
 </body>
 </html>
