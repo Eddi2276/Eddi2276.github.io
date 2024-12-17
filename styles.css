@@ -10,9 +10,9 @@
     p{color: aliceblue;}
 
     .Top_logo{
-        margin-top: 5%;
-        margin-left: 3%;
-        margin-right: 3%;
+      margin-left: 2%;
+      margin-right: 2%;
+
     }
 
     h1 {
@@ -37,12 +37,9 @@
         display: grid;
         grid-template-columns: auto auto;
         padding: 10px;
+        column-gap:15vh
       }
 
-    .vote-container {
-      margin: 20px auto;
-      width: 300px;
-    }
 
     button {
       padding: 10px 20px;
@@ -61,4 +58,14 @@
     .vote-count {
       font-size: 24px;
       margin: 10px 0;
+    }
+
+    .intro{
+      padding-top: 3%;
+      width: fit-content;
+      /*border: 3px solid green;*/
+      
+    }
+    .vote-container{
+      
     }

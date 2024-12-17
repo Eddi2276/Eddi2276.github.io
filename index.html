@@ -37,7 +37,8 @@
       "Mario_Kart_8_Deluxe","vier_gewinnt","ballon_fight","ice_hockey",
       "Street_fighter_2", "Super_smash_bros_64", "GoldenEye007","1080°",
       "WWF_no_mercy", "Fifa64", "Tekken_3","Tony_Hawk_pro_2","Mario_Golf",
-      "Mario_kart_Double_dash", "Rocket_League", "Gran_turismo_sport"
+      "Mario_kart_Double_dash", "Rocket_League", "Gran_turismo_sport",
+      "Mario_Smash_Football","CoD"
     ];
 
     // Firebase-Referenzen erstellen und Live-Updates aktivieren
@@ -67,11 +68,15 @@
   </script>
 </head>
 <body>
-<img class="Top_logo" src="logo.png" alt="logo">
-<div>
-<button id="playSoundBtn">Sound on!</button>
-<audio id="myAudio" src="22. The Only Thing They Fear Is You.mp3" preload="auto"></audio>
-</div>
+
+<div class="intro">
+
+    <img class="Top_logo" src="logo.png" alt="logo">
+
+    <div>
+        <button id="playSoundBtn">Sound on!</button>
+        <audio id="myAudio" src="22. The Only Thing They Fear Is You.mp3" preload="auto"></audio>
+    </div>
 
 <script>
     document.getElementById("playSoundBtn").onclick = function() {
@@ -105,6 +110,8 @@
     Hast du noch Spielewünsche!? Dann schreib mir doch du Lappen!<br>
 
 </h4>
+</div>
+
 
           
 
@@ -134,6 +141,21 @@
         <img  src="cover_img/MK64.jpg" alt="logo" width="160px">
         <button onclick="vote('Mario_Kart_64')">Vote for Mario Kart 64</button>
         <p>Votes: <span id="Mario_Kart_64">0</span></p>
+    </div>
+
+
+    <div class="vote-container">
+        <!-- <h2>N64 (Nintendo 64)</h2> -->
+        <img  src="cover_img/COD.jpg" alt="logo" width="160px">
+        <button onclick="vote('CoD')">Vote for CoD: Advanced Warfare</button>
+        <p>Votes: <span id="CoD">0</span></p>
+    </div>
+
+    <div class="vote-container">
+        <!-- <h2>N64 (Nintendo 64)</h2> -->
+        <img  src="cover_img/marioSmashFootball.jpg" alt="logo" width="160px">
+        <button onclick="vote('Mario_Smash_Football')">Vote for Mario Smash Football</button>
+        <p>Votes: <span id="Mario_Smash_Football">0</span></p>
     </div>
 
     <div class="vote-container">
